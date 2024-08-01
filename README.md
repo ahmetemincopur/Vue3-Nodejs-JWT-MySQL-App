@@ -33,3 +33,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 # Login and Register pages created and vue-router installed
 
 # tailwindcss added and pages updated
+
+# Prisma added. MySQL integrated. Prisma used to create database and tables.
+
+# API's added to send data from frontend to backend. Prisma used to create users.
