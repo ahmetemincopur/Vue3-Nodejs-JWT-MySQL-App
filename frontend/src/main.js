@@ -7,6 +7,9 @@ import Discover from "./pages/Discover.vue";
 import "./index.css";
 import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import store from "./store";
+import Toast, { POSITION } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 // Fix Leaflet's default icon issue with webpack
 delete Icon.Default.prototype._getIconUrl;
@@ -29,5 +32,9 @@ const router = createRouter({
 });
 
 const app = createApp(App);
+app.use(store);
 app.use(router);
+app.use(Toast, {
+  position: POSITION.TOP_RIGHT,
+});
 app.mount("#app");

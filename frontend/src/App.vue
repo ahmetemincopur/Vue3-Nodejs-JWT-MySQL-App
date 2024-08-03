@@ -1,17 +1,33 @@
 <template>
-  <div id="app">
-    <nav class="bg-white shadow-md py-4">
-      <div class="container mx-auto flex justify-center">
-        <router-link to="/login" class="mx-4 text-indigo-600 hover:text-indigo-800">Login</router-link>
-        <router-link to="/register" class="mx-4 text-indigo-600 hover:text-indigo-800">Register</router-link>
+  <div>
+    <nav class="bg-gray-800 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <div class="text-white font-bold">MyApp</div>
+        <div>
+          <router-link v-if="!isAuthenticated" to="/login" class="text-white mr-4">Login</router-link>
+          <router-link v-if="!isAuthenticated" to="/register" class="text-white mr-4">Register</router-link>
+          <button v-if="isAuthenticated" @click="handleLogout" class="text-white">Logout</button>
+        </div>
       </div>
     </nav>
-    <router-view />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    ...mapGetters(['isAuthenticated']),
+  },
+  methods: {
+    ...mapActions(['logout']),
+    handleLogout() {
+      this.logout();
+      this.$router.push('/login');
+    }
+  },
 };
 </script>

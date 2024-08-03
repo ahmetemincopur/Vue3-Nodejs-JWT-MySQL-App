@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - mysql
+    environment:
+      - DATABASE_URL=mysql://root:admin@localhost:3306/VueAppDatabase
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=b313cc2564a161e2385611aac10d03a421867b4176faca9d17a3e21a39517276e6f882cc14508b396976078dfed12ab7ef975d5e60ec8509070da17280ada7f0
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: VueAppDatabase
+    ports:
+      - "3307:3306"

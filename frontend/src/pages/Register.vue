@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import LocationMap from '../components/LocationMap.vue';
 
 export default {
@@ -53,6 +54,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['login']),
     handleFileUpload(event) {
       this.avatars = Array.from(event.target.files);
     },
@@ -76,17 +78,27 @@ export default {
           body: formData,
         });
 
+        const data = await response.json();
+        console.log('Register response data:', data); // Log the response data
+
         if (response.ok) {
+          localStorage.setItem('token', data.token);
+          this.login(data.user.id); // Dispatch login action with user ID
           this.$router.push('/discover');
         } else {
-          const error = await response.json();
-          console.error('Error:', error);
+          console.error('Error:', data);
+          if (data && data.error) {
+            this.$toast.error(data.error);
+          } else {
+            this.$toast.error('Registration failed!');
+          }
         }
       } catch (error) {
         console.error('Fetch error:', error);
+        this.$toast.error('Fetch error!');
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
